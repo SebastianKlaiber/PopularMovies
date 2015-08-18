@@ -10,16 +10,37 @@ import java.util.List;
  */
 public class Result {
 
+    private static List<Result> resultList = new ArrayList<>();
+
+    @SerializedName("id")
+    public int id;
+
+    @SerializedName("backdrop_path")
+    public String backdropPath;
+
     @SerializedName("original_title")
     public String originalTitle;
 
     @SerializedName("poster_path")
     public String posterPath;
 
+    @SerializedName("overview")
+    public String overview;
 
-    public List<Result> getResultList() {
-        List<Result> resultList = new ArrayList<>();
-        return resultList;
+    @SerializedName("release_date")
+    public String releaseDate;
+
+    @SerializedName("title")
+    public String title;
+
+    @SerializedName("vote_average")
+    public float voteAverage;
+
+    public static void setResultList(List<Result> list) {
+        resultList = list;
     }
 
+    public static List<Result> getResultList() {
+        return resultList;
+    }
 }

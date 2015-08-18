@@ -1,0 +1,67 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="de.k11dev.sklaiber.popularmovies.ui.MovieDetail">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:layout_height="150dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/white"
+            android:background="@color/material_deep_teal_500" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:id="@+id/detail_image"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/image_content_desc" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/gray_500"
+                android:layout_toRightOf="@id/detail_image"
+                android:layout_marginLeft="@dimen/margin_detail_image_right" />
+
+            <TextView
+                android:id="@+id/vote_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/release_date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:layout_toRightOf="@id/detail_image"
+                android:textColor="@color/gray_500"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/margin_detail_image_right" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_500"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_below="@id/detail_image" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

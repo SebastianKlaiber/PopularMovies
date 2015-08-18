@@ -1,12 +1,14 @@
-package de.k11dev.sklaiber.popularmovies;
+package de.k11dev.sklaiber.popularmovies.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
@@ -14,7 +16,6 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,17 +23,18 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.k11dev.sklaiber.popularmovies.Config;
+import de.k11dev.sklaiber.popularmovies.R;
+import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.Result;
 import de.k11dev.sklaiber.popularmovies.model.SearchResponse;
+import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GridView.OnItemClickListener {
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private List<String> mMovieList = new ArrayList<String>();
-
-//    @Bind(R.id.image)    ImageView mImageView;
-//    @Bind(R.id.gridview) GridView mGridView;
+    @Bind(R.id.grid) GridView mGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-//        mGridView.setAdapter(new ImageAdapter(this));
+        mGridView.setOnItemClickListener(this);
 
         OkHttpClient client = new OkHttpClient();
 
@@ -61,24 +63,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response response) throws IOException {
                 if (response.isSuccessful()) {
-
                     Gson gson = new Gson();
                     SearchResponse searchResponse = gson.fromJson(response.body().string(), SearchResponse.class);
-                    Log.d(LOG_TAG, searchResponse.getList().toString());
-//                    List<Result> results = searchResponse.results;
-//
-//                    for (Result result : results) {
-//                        mMovieList.add(result.posterPath);
-//                    }
+                    Result.setResultList(searchResponse.results);
+
                 }
             }
         });
 
-//        Picasso.with(this)
-//                .load(Config.IMAGE_URL_SIZE + "/7SGGUiTE6oc2fh9MjIk5M00dsQd.jpg")
-//                .into(mImageView);
+        mGridView.setAdapter(new ImageAdapter(getApplicationContext()));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,5 +94,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(MainActivity.this, MovieDetail.class);
+
+        Movie movie = new Movie(String.valueOf(Result.getResultList().get(position).id)
+                , Result.getResultList().get(position).title
+                , Result.getResultList().get(position).releaseDate
+                , String.valueOf(Result.getResultList().get(position).voteAverage)
+                , Result.getResultList().get(position).overview
+                , Result.getResultList().get(position).posterPath
+                , Result.getResultList().get(position).backdropPath);
+
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 }

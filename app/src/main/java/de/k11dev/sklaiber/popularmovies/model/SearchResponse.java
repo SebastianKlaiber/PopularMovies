@@ -10,17 +10,7 @@ import java.util.List;
  */
 public class SearchResponse {
 
+//    public List<Movie> results;
     public List<Result> results;
-
-    public List<Result> getList () {
-        List<Result> movie = new ArrayList<>();
-
-        for (Result result : results) {
-//            results.add(result.posterPath);
-            results.add(result);
-        }
-
-        return results;
-    }
 
 }
