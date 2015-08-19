@@ -1,14 +1,15 @@
 package de.k11dev.sklaiber.popularmovies.ui;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Call;
@@ -16,25 +17,21 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
+import de.k11dev.sklaiber.popularmovies.FetchMovieData;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.Result;
 import de.k11dev.sklaiber.popularmovies.model.SearchResponse;
 import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageAdapter;
 
-public class MainActivity extends AppCompatActivity implements GridView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements GridFragment.Callback{
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    @Bind(R.id.grid) GridView mGridView;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,35 +40,48 @@ public class MainActivity extends AppCompatActivity implements GridView.OnItemCl
 
         ButterKnife.bind(this);
 
-        mGridView.setOnItemClickListener(this);
+//        FetchMovieData.getMovieData(Config.MOST_POPULAR);
 
-        OkHttpClient client = new OkHttpClient();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.replace(R.id.grid_container, new GridFragment());
+//        ft.commit();
 
-        Request request = new Request.Builder().url(Config.API_URL
-                + Config.MOST_POPULAR
-                + Config.API_KEY)
-                .build();
+        if (findViewById(R.id.detail_container) != null) {
+            mTwoPane = true;
+        } else {
+            mTwoPane = false;
+        }
+    }
 
-        Call call = client.newCall(request);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sort = sharedPreferences.getString(getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_popularity));
 
-            }
+        if (sort.equals(getString(R.string.pref_sort_popularity))) {
+            FetchMovieData.getMovieData(Config.MOST_POPULAR);
+            GridFragment.updateList();
+        } else {
+            FetchMovieData.getMovieData(Config.HIGHEST_RATED);
+            GridFragment.updateList();
+        }
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Gson gson = new Gson();
-                    SearchResponse searchResponse = gson.fromJson(response.body().string(), SearchResponse.class);
-                    Result.setResultList(searchResponse.results);
+    }
 
-                }
-            }
-        });
-
-        mGridView.setAdapter(new ImageAdapter(getApplicationContext()));
+    @Override
+    public void onItemSelected(int position) {
+        if (mTwoPane) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.detail_container, DetailFragment.newInstance(FetchMovieData.getMovieParcable(position)))
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("movie", FetchMovieData.getMovieParcable(position));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -90,25 +100,10 @@ public class MainActivity extends AppCompatActivity implements GridView.OnItemCl
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(MainActivity.this, MovieDetail.class);
-
-        Movie movie = new Movie(String.valueOf(Result.getResultList().get(position).id)
-                , Result.getResultList().get(position).title
-                , Result.getResultList().get(position).releaseDate
-                , String.valueOf(Result.getResultList().get(position).voteAverage)
-                , Result.getResultList().get(position).overview
-                , Result.getResultList().get(position).posterPath
-                , Result.getResultList().get(position).backdropPath);
-
-        intent.putExtra("movie", movie);
-        startActivity(intent);
     }
 }

@@ -1,5 +1,6 @@
 package de.k11dev.sklaiber.popularmovies.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.k11dev.sklaiber.popularmovies.R;
 
 /**
  * Created by sklaiber on 18.08.15.
@@ -116,7 +119,7 @@ public class Movie implements Parcelable {
     }
 
     public String getRating() {
-        return rating + "/10";
+        return rating;
     }
 
     public String getId() {

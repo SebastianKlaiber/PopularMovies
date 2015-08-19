@@ -9,6 +9,9 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Movie;
@@ -62,5 +65,11 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         return gridView;
+    }
+
+    public void updateMovieList(List<Result> results) {
+        Result.getResultList().clear();
+        Result.setResultList(results);
+        this.notifyDataSetChanged();
     }
 }

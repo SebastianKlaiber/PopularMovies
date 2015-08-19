@@ -19,9 +19,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MovieDetail"
-            android:label="@string/title_activity_movie_detail" >
+            android:name=".ui.DetailActivity"
+            android:label="@string/title_activity_movie_detail"
+            android:parentActivityName=".ui.MainActivity">
         </activity>
+
+        <activity android:name=".ui.SettingsActivity"
+            android:theme="@style/SettingsTheme"
+            android:label="@string/action_settings"
+            android:parentActivityName=".ui.MainActivity" />
     </application>
 
 </manifest>
