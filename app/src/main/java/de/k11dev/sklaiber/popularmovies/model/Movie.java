@@ -1,133 +1,88 @@
 package de.k11dev.sklaiber.popularmovies.model;
 
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-
-import de.k11dev.sklaiber.popularmovies.R;
 
 /**
- * Created by sklaiber on 18.08.15.
+ * Created by sklaiber on 24.08.15.
  */
-public class Movie implements Parcelable {
+public class Movie {
 
-    private static List<Movie> movieList = new ArrayList<>();
-
+    private String backdrop_path;
     private String id;
-
-    private String title;
-
-    private String releaseYear;
-
-    private String rating;
-
+    private String original_title;
     private String overview;
+    private String releaseDate;
+    private String title;
+    private String voteAverage;
+    private String posterPath;
 
-    public String posterPath;
+    final String OWM_POSTER_PATH = "poster_path";
+    final String OWM_BACKDROP_PATH = "backdrop_path";
+    final String OWM_ID = "id";
+    final String OWN_ORIGINAL_TITLE = "original_title";
+    final String OWM_OVERVIEW = "overview";
+    final String OWM_RELEASE_DATE = "release_date";
+    final String OWM_TITLE = "title";
+    final String OWM_VOTE_AVERAGE = "vote_average";
 
-    private String backdropPath;
-
-    //Constructor
-    public Movie(String id,
-                 String title,
-                 String releaseYear,
-                 String rating,
-                 String overview,
-                 String posterPath,
-                 String backdropPath)
-    {
-        this.id = id;
-        this.title = title;
-        this.releaseYear = releaseYear;
-        this.rating = rating;
-        this.overview = overview;
-        this.posterPath = posterPath;
-        this.backdropPath = backdropPath;
-    }
-
-    //Getter and Setter Methods
-
-    //Parcelling Section
-    public Movie(Parcel in){
-        String[] movieData = new String[7];
-
-        in.readStringArray(movieData);
-        this.id = movieData[0];
-        this.title = movieData[1];
-        this.releaseYear = movieData[2];
-        this.rating = movieData[3];
-        this.overview = movieData[4];
-        this.posterPath = movieData[5];
-        this.backdropPath = movieData[6];
-    }
-
-    public static void setMovieList(List<Movie> list) {
-        movieList = list;
-    }
-
-    public static List<Movie> getMovieList() {
-        return movieList;
-    }
-
-    @Override
-    public int describeContents(){
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {
-                this.id,
-                this.title,
-                this.releaseYear,
-                this.rating,
-                this.overview,
-                this.posterPath,
-                this.backdropPath
-        });
-    }
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+    public Movie(JSONObject object) {
+        try {
+            this.backdrop_path = object.getString(OWM_BACKDROP_PATH);
+            this.id = String.valueOf(object.getInt(OWM_ID));
+            this.original_title = object.getString(OWN_ORIGINAL_TITLE);
+            this.overview = object.getString(OWM_OVERVIEW);
+            this.releaseDate = object.getString(OWM_RELEASE_DATE);
+            this.title = object.getString(OWM_TITLE);
+            this.voteAverage = String.valueOf(object.getDouble(OWM_VOTE_AVERAGE));
+            this.posterPath = object.getString(OWM_POSTER_PATH);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
 
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+    public static ArrayList<Movie> fromJson(JSONArray jsonObjects) {
+        ArrayList<Movie> movies = new ArrayList<>();
+        for (int i = 0; i < jsonObjects.length(); i++) {
+            try {
+                movies.add(new Movie(jsonObjects.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-    };
-
-    public String getBackdropPath() {
-        return backdropPath;
+        return movies;
     }
 
     public String getPosterPath() {
         return posterPath;
     }
 
-    public String getOverview() {
-        return overview;
+    public String getVoteAverage() {
+        return voteAverage;
     }
 
-    public String getReleaseYear() {
-        String[] parts = releaseYear.split("-");
-        return parts[0];
-    }
-
-    public String getRating() {
-        return rating;
+    public String getBackdropPath() {
+        return backdrop_path;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getOrginialTitle() {
+        return original_title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
     public String getTitle() {

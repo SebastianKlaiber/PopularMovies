@@ -4,7 +4,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import de.k11dev.sklaiber.popularmovies.R;
-import de.k11dev.sklaiber.popularmovies.model.Movie;
+import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -13,10 +13,10 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        Movie movie = getIntent().getParcelableExtra("movie");
+        MovieParcelable movieParcelable = getIntent().getParcelableExtra(MainActivity.KEY_MOVIE_PARCELABLE);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.your_placeholder, DetailFragment.newInstance(movie));
+        ft.replace(R.id.detail_container, DetailFragment.newInstance(movieParcelable));
         ft.commit();
     }
 }

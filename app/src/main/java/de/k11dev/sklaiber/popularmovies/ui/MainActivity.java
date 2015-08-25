@@ -1,35 +1,26 @@
 package de.k11dev.sklaiber.popularmovies.ui;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import java.io.IOException;
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
-import de.k11dev.sklaiber.popularmovies.Config;
-import de.k11dev.sklaiber.popularmovies.FetchMovieData;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Movie;
-import de.k11dev.sklaiber.popularmovies.model.Result;
-import de.k11dev.sklaiber.popularmovies.model.SearchResponse;
-import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageAdapter;
+import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 
 public class MainActivity extends AppCompatActivity implements GridFragment.Callback{
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    public final static String KEY_MOVIE_PARCELABLE = "movie";
+
+    private static ArrayList<Movie> mMovies = new ArrayList<>();
 
     private boolean mTwoPane;
 
@@ -40,46 +31,38 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
 
         ButterKnife.bind(this);
 
-//        FetchMovieData.getMovieData(Config.MOST_POPULAR);
+        mTwoPane = findViewById(R.id.detail_container) != null;
 
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.replace(R.id.grid_container, new GridFragment());
-//        ft.commit();
+        GridFragment fragment = new GridFragment();
 
-        if (findViewById(R.id.detail_container) != null) {
-            mTwoPane = true;
-        } else {
-            mTwoPane = false;
-        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.grid_fragment, fragment)
+                .commit();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String sort = sharedPreferences.getString(getString(R.string.pref_sort_key),
-                getString(R.string.pref_sort_popularity));
-
-        if (sort.equals(getString(R.string.pref_sort_popularity))) {
-            FetchMovieData.getMovieData(Config.MOST_POPULAR);
-            GridFragment.updateList();
-        } else {
-            FetchMovieData.getMovieData(Config.HIGHEST_RATED);
-            GridFragment.updateList();
-        }
-
+    public void setList(ArrayList<Movie> movies){
+        mMovies.clear();
+        mMovies.addAll(movies);
     }
 
     @Override
     public void onItemSelected(int position) {
+        MovieParcelable movieParcelable = new MovieParcelable(
+                mMovies.get(position).getId(),
+                mMovies.get(position).getTitle(),
+                mMovies.get(position).getReleaseDate(),
+                mMovies.get(position).getVoteAverage(),
+                mMovies.get(position).getOverview(),
+                mMovies.get(position).getPosterPath(),
+                mMovies.get(position).getBackdropPath());
+
         if (mTwoPane) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.detail_container, DetailFragment.newInstance(FetchMovieData.getMovieParcable(position)))
+                    .replace(R.id.detail_container, DetailFragment.newInstance(movieParcelable))
                     .commit();
         } else {
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("movie", FetchMovieData.getMovieParcable(position));
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(KEY_MOVIE_PARCELABLE, movieParcelable);
             startActivity(intent);
         }
     }

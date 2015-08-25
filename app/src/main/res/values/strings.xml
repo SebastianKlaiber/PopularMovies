@@ -7,15 +7,23 @@
     <string name="image_content_desc">Movie Image</string>
     <string name="title_activity_movie_detail">MovieDetail</string>
 
+    <string name="detail_release_date">Release Date</string>
+
+    <string name="detail_title_image">Title Image</string>
+
     <string name="pref_sort_label">Sort Movies</string>
     <string name="pref_sort_key">SortKey</string>
     <string name="pref_sort_popularity">popularity</string>
 
+    <string name="pref_default_value">popularity.desc</string>
+
+    <string name="movie_parcable_key">movieParcelable</string>
+
     <string name="format_rating"><xliff:g id="rating">%1$s</xliff:g>/10</string>
 
     <array name="pref_sort_values">
-        <item>highest_rated</item>
-        <item>popularity</item>
+        <item>vote_average.desc</item>
+        <item>popularity.desc</item>
     </array>
 
     <array name="pref_sort_options">
