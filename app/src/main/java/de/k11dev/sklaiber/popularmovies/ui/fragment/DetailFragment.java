@@ -1,7 +1,6 @@
-package de.k11dev.sklaiber.popularmovies.ui;
+package de.k11dev.sklaiber.popularmovies.ui.fragment;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -16,15 +15,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
+import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 
 /**
  * Created by sklaiber on 19.08.15.

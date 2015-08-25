@@ -1,9 +1,8 @@
-package de.k11dev.sklaiber.popularmovies.ui;
+package de.k11dev.sklaiber.popularmovies.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,14 +12,17 @@ import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
+import de.k11dev.sklaiber.popularmovies.model.Result;
+import de.k11dev.sklaiber.popularmovies.ui.fragment.DetailFragment;
+import de.k11dev.sklaiber.popularmovies.ui.fragment.GridFragment;
 
-public class MainActivity extends AppCompatActivity implements GridFragment.Callback{
+public class MainActivity extends AppCompatActivity implements GridFragment.Callback {
 
     public final String LOG_TAG = MainActivity.class.getSimpleName();
 
     public final static String KEY_MOVIE_PARCELABLE = "movie";
 
-    private static ArrayList<Movie> mMovies = new ArrayList<>();
+    private static ArrayList<Result> mMovies = new ArrayList<>();
 
     private boolean mTwoPane;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
                 .commit();
     }
 
-    public void setList(ArrayList<Movie> movies){
+    public void setList(ArrayList<Result> movies){
         mMovies.clear();
         mMovies.addAll(movies);
     }

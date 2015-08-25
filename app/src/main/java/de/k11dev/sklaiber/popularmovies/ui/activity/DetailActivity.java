@@ -1,10 +1,11 @@
-package de.k11dev.sklaiber.popularmovies.ui;
+package de.k11dev.sklaiber.popularmovies.ui.activity;
 
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
+import de.k11dev.sklaiber.popularmovies.ui.fragment.DetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
 

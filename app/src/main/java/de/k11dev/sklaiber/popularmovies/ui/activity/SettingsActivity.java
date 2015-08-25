@@ -1,4 +1,4 @@
-package de.k11dev.sklaiber.popularmovies.ui;
+package de.k11dev.sklaiber.popularmovies.ui.activity;
 
 import android.os.Bundle;
 import android.preference.ListPreference;

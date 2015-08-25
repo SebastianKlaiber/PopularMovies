@@ -14,15 +14,16 @@ import java.util.ArrayList;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Movie;
+import de.k11dev.sklaiber.popularmovies.model.Result;
 
 /**
  * Created by sklaiber on 24.08.15.
  */
-public class ImageArrayAdapter extends ArrayAdapter<Movie> {
+public class ImageArrayAdapter extends ArrayAdapter<Result> {
 
-    private ArrayList<Movie> mList;
+    private ArrayList<Result> mList;
 
-    public ImageArrayAdapter(Context context, ArrayList<Movie> list) {
+    public ImageArrayAdapter(Context context, ArrayList<Result> list) {
         super(context, 0, list);
         mList = list;
     }
