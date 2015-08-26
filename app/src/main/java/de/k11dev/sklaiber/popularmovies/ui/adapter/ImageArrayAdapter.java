@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
-import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.Result;
 
 /**

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.R;
-import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.Result;
 import de.k11dev.sklaiber.popularmovies.ui.fragment.DetailFragment;
@@ -35,11 +34,11 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
 
         mTwoPane = findViewById(R.id.detail_container) != null;
 
-        GridFragment fragment = new GridFragment();
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.grid_fragment, fragment)
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.grid_fragment, new GridFragment())
+                    .commit();
+        }
     }
 
     public void setList(ArrayList<Result> movies){

@@ -2,8 +2,6 @@ package de.k11dev.sklaiber.popularmovies.ui.fragment;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -16,16 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -33,12 +21,10 @@ import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.app.App;
-import de.k11dev.sklaiber.popularmovies.model.Movie;
 import de.k11dev.sklaiber.popularmovies.model.Result;
 import de.k11dev.sklaiber.popularmovies.rest.model.ApiResponse;
 import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageArrayAdapter;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
