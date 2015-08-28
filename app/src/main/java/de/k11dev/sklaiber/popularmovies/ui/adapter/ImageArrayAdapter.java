@@ -45,9 +45,11 @@ public class ImageArrayAdapter extends ArrayAdapter<Result> {
             holder = (ViewHolder) gridView.getTag();
         }
 
-        Picasso.with(getContext())
-                .load(Config.IMAGE_URL + Config.IMAGE_SIZE_W185 + mList.get(position).getPosterPath())
-                .into(holder.imageView);
+        if (mList.get(position).getPosterPath().length() != 0) {
+            Picasso.with(getContext())
+                    .load(Config.IMAGE_URL + Config.IMAGE_SIZE_W185 + mList.get(position).getPosterPath())
+                    .into(holder.imageView);
+        }
 
         return gridView;
     }
