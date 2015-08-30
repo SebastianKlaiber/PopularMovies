@@ -1,6 +1,7 @@
 package de.k11dev.sklaiber.popularmovies.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +46,14 @@ public class ImageArrayAdapter extends ArrayAdapter<Result> {
             holder = (ViewHolder) gridView.getTag();
         }
 
-        if (mList.get(position).getPosterPath().length() != 0) {
-            Picasso.with(getContext())
-                    .load(Config.IMAGE_URL + Config.IMAGE_SIZE_W185 + mList.get(position).getPosterPath())
-                    .into(holder.imageView);
-        }
+        Uri builtUri  = Uri.parse(Config.IMAGE_URL).buildUpon()
+                .appendEncodedPath(Config.IMAGE_SIZE_W185)
+                .appendEncodedPath(mList.get(position).getPosterPath())
+                .build();
+
+        Picasso.with(getContext())
+                .load(builtUri)
+                .into(holder.imageView);
 
         return gridView;
     }
