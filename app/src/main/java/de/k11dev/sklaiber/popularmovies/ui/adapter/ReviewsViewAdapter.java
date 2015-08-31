@@ -1,6 +1,5 @@
 package de.k11dev.sklaiber.popularmovies.ui.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,6 @@ public class ReviewsViewAdapter extends RecyclerView.Adapter<ReviewsViewAdapter.
 
     private ArrayList<ReviewResult> mReviewResults = new ArrayList<>();
 
-    private Context mContext;
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView content;
         private TextView author;
@@ -32,8 +29,7 @@ public class ReviewsViewAdapter extends RecyclerView.Adapter<ReviewsViewAdapter.
         }
     }
 
-    public ReviewsViewAdapter(Context context, ArrayList<ReviewResult> reviewResults) {
-        this.mContext = context;
+    public ReviewsViewAdapter(ArrayList<ReviewResult> reviewResults) {;
         this.mReviewResults = reviewResults;
     }
 

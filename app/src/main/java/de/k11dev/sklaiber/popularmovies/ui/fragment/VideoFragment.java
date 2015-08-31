@@ -29,13 +29,12 @@ import de.k11dev.sklaiber.popularmovies.ui.adapter.VideosViewAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
 /**
  * Created by sklaiber on 30.08.15.
  */
 public class VideoFragment extends Fragment {
-
-    private static String LOG_TAG = VideoFragment.class.getSimpleName();
 
     private final static String TRAILER_KEY = "trailer_key";
 
@@ -102,7 +101,7 @@ public class VideoFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(LOG_TAG, error.getMessage());
+                Timber.d(error.getMessage());
             }
         });
     }

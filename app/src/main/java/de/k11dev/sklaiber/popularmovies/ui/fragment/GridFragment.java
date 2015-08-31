@@ -34,6 +34,7 @@ import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageArrayAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
 /**
  * Created by sklaiber on 19.08.15.
@@ -48,8 +49,6 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
     private String sortingOrder = "";
 
     private ArrayList<Result> mResultList = new ArrayList<>();
-
-    public static final String LOG_TAG = GridFragment.class.getSimpleName();
 
     @Bind(R.id.grid) GridView mGridView;
     @Bind(R.id.progress_bar) ProgressBar mProgressBar;
@@ -115,7 +114,7 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(LOG_TAG, error.getMessage());
+                Timber.d(error.getMessage());
             }
         });
     }
@@ -125,7 +124,7 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
         super.onResume();
 
         if (!Utility.isNetworkAvailable(getActivity())) {
-            Log.e(LOG_TAG, "Network is not available");
+            Timber.d("Network is not available");
 
             CharSequence text = getString(R.string.network_not_available_message);
             Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_LONG);
@@ -133,7 +132,7 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
         } else {
             String newSortingOrder = Utility.getPreferredSortingOrder(getActivity());
             if (newSortingOrder != null && !newSortingOrder.equals(sortingOrder)) {
-                Log.d(LOG_TAG, "updating movies via API call");
+                Timber.d("updating movies via API call");
                 sortingOrder = newSortingOrder;
 
                 updateMovies();
@@ -141,8 +140,6 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
 
         }
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

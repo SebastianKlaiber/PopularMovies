@@ -8,6 +8,8 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Timer;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
+import timber.log.Timber;
 
 /**
  * Created by sklaiber on 19.08.15.
@@ -37,6 +42,7 @@ public class DetailFragment extends Fragment {
     @Bind(R.id.detail_image) ImageView mImageView;
     @Bind(R.id.title_image) ImageView mTitleImage;
     @Bind(R.id.rating_bar)  RatingBar mRatingBar;
+    @Bind(R.id.fab_normal)  FloatingActionButton mFAB;
 
     public static DetailFragment newInstance(MovieParcelable movie) {
         DetailFragment detailFragment = new DetailFragment();
@@ -76,6 +82,13 @@ public class DetailFragment extends Fragment {
         Picasso.with(getActivity())
                 .load(Config.IMAGE_URL + Config.IMAGE_SIZE_W185 + mMovieParcelable.getPosterPath())
                 .into(mImageView);
+
+        mFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return rootView;
     }
 }

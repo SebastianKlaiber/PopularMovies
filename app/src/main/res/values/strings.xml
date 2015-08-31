@@ -30,10 +30,12 @@
     <array name="pref_sort_values">
         <item>vote_average.desc</item>
         <item>popularity.desc</item>
+        <item>favorite</item>
     </array>
 
     <array name="pref_sort_options">
         <item>Highest Rated</item>
         <item>Popularity</item>
+        <item>Favorite</item>
     </array>
 </resources>

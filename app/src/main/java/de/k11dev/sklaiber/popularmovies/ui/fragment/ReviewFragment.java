@@ -29,13 +29,12 @@ import de.k11dev.sklaiber.popularmovies.ui.adapter.VideosViewAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
 /**
  * Created by sklaiber on 30.08.15.
  */
 public class ReviewFragment extends Fragment {
-
-    private final String LOG_TAG = ReviewFragment.class.getSimpleName();
 
     private final static String REVIEW_KEY = "review_key";
 
@@ -71,13 +70,12 @@ public class ReviewFragment extends Fragment {
             mReviewResults = savedInstanceState.getParcelableArrayList(REVIEW_KEY);
 
             if (mReviewResults != null) {
-                mRecyclerView.setAdapter(new ReviewsViewAdapter(getActivity(), mReviewResults));
+                mRecyclerView.setAdapter(new ReviewsViewAdapter(mReviewResults));
             }
         } else {
             updateReviews();
         }
 
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -94,13 +92,13 @@ public class ReviewFragment extends Fragment {
             public void success(ReviewsResponse reviewsResponse, Response response) {
                 if (!reviewsResponse.getReviewResults().isEmpty()) {
                     mReviewResults = reviewsResponse.getReviewResults();
-                    mRecyclerView.setAdapter(new ReviewsViewAdapter(getActivity(), reviewsResponse.getReviewResults()));
+                    mRecyclerView.setAdapter(new ReviewsViewAdapter(reviewsResponse.getReviewResults()));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(LOG_TAG, error.getMessage());
+                Timber.d(error.getMessage());
             }
         });
     }
