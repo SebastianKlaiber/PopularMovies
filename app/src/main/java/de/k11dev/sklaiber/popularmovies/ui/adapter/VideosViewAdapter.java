@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +25,12 @@ public class VideosViewAdapter extends RecyclerView.Adapter<VideosViewAdapter.Vi
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        private TextView nameTV;
         private ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text);
+            nameTV = (TextView) itemView.findViewById(R.id.name_tv);
             imageView = (ImageView) itemView.findViewById(R.id.image);
         }
     }
@@ -43,14 +42,14 @@ public class VideosViewAdapter extends RecyclerView.Adapter<VideosViewAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.video_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.trailer_row_item, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.textView.setText(mVideoResults.get(position).getName());
+        viewHolder.nameTV.setText(mVideoResults.get(position).getName());
         viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -34,7 +34,7 @@ public class PageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return VideoFragment.newInstance(mMovieParcelable);
             case 2:
-                return new ReviewFragment();
+                return ReviewFragment.newInstance(mMovieParcelable);
             default:
                 return null;
         }

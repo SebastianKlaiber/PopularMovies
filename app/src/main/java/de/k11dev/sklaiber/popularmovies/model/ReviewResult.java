@@ -1,13 +1,16 @@
 package de.k11dev.sklaiber.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by sklaiber on 30.08.15.
  */
-public class ReviewResult {
+public class ReviewResult implements Parcelable {
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("author")
     private String author;
@@ -18,7 +21,7 @@ public class ReviewResult {
     @SerializedName("url")
     private String url;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -34,4 +37,37 @@ public class ReviewResult {
         return url;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.author);
+        dest.writeString(this.content);
+        dest.writeString(this.url);
+    }
+
+    public ReviewResult() {
+    }
+
+    protected ReviewResult(Parcel in) {
+        this.id = in.readString();
+        this.author = in.readString();
+        this.content = in.readString();
+        this.url = in.readString();
+    }
+
+    public static final Parcelable.Creator<ReviewResult> CREATOR = new Parcelable.Creator<ReviewResult>() {
+        public ReviewResult createFromParcel(Parcel source) {
+            return new ReviewResult(source);
+        }
+
+        public ReviewResult[] newArray(int size) {
+            return new ReviewResult[size];
+        }
+    };
 }
