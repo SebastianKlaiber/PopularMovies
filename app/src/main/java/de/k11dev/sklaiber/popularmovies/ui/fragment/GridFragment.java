@@ -124,7 +124,7 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
     public void onResume() {
         super.onResume();
 
-        if (!isNetworkAvailable(getActivity())) {
+        if (!Utility.isNetworkAvailable(getActivity())) {
             Log.e(LOG_TAG, "Network is not available");
 
             CharSequence text = getString(R.string.network_not_available_message);
@@ -142,14 +142,7 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
         }
     }
 
-    static public boolean isNetworkAvailable(Context c) {
-        ConnectivityManager cm =
-                (ConnectivityManager)c.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

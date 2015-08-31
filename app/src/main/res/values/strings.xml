@@ -21,7 +21,11 @@
 
     <string name="movie_parcable_key">movieParcelable</string>
 
-    <string name="format_rating"><xliff:g id="rating">%1$s</xliff:g>/10</string>
+    <string name="trailers_tv">Trailers:</string>
+
+    <string name="view_pager_overview">Overview</string>
+    <string name="view_pager_trailer">Trailer</string>
+    <string name="view_pager_review">Review</string>
 
     <array name="pref_sort_values">
         <item>vote_average.desc</item>
