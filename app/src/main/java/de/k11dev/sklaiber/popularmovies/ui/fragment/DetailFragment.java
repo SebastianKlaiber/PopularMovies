@@ -10,21 +10,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.util.MutableBoolean;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Timer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
+import de.k11dev.sklaiber.popularmovies.Utility;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 import timber.log.Timber;
@@ -66,13 +71,20 @@ public class DetailFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
+        ArrayList<String> strings = Utility.getMovies(getActivity());
+        for (int i = 0; i < strings.size(); i++) {
+            if (mMovieParcelable.getIdParc().equals(strings.get(i))) {
+                mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+
         mTitleTv.setText(mMovieParcelable.getTitleParc());
         mDescriptionTv.setText(mMovieParcelable.getOverview());
         mReleaseDateTv.setText(mMovieParcelable.getReleaseYear());
 
         mRatingBar.setRating(Float.valueOf(mMovieParcelable.getRating()));
 
-        LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
+        final LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
         Picasso.with(getActivity())
@@ -83,12 +95,36 @@ public class DetailFragment extends Fragment {
                 .load(Config.IMAGE_URL + Config.IMAGE_SIZE_W185 + mMovieParcelable.getPosterPath())
                 .into(mImageView);
 
-        mFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         return rootView;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.fab_normal)
+    public void onClick(View v){
+        ArrayList<String> strings = Utility.getMovies(getActivity());
+        if (strings.size() != 0) {
+            for (int i = 0; i < strings.size(); i++) {
+                if (mMovieParcelable.getIdParc().equals(strings.get(i))) {
+                    Utility.removeMovie(getActivity(), mMovieParcelable.getIdParc());
+                    mFAB.setColorFilter(null);
+                    Toast.makeText(getActivity(), getString(R.string.remove_from_favorite_list) + mMovieParcelable.getTitleParc(), Toast.LENGTH_LONG).show();
+                } else {
+                    Utility.addMovieId(getActivity(), mMovieParcelable.getIdParc());
+                    Toast.makeText(getActivity(), getString(R.string.add_to_favorite_list) + mMovieParcelable.getTitleParc(), Toast.LENGTH_LONG).show();
+                    mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+        } else {
+            Utility.addMovieId(getActivity(), mMovieParcelable.getIdParc());
+            Toast.makeText(getActivity(), getString(R.string.add_to_favorite_list), Toast.LENGTH_LONG).show();
+            mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+        }
+    }
+
+
 }

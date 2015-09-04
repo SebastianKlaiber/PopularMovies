@@ -27,6 +27,9 @@
     <string name="view_pager_trailer">Trailer</string>
     <string name="view_pager_review">Review</string>
 
+    <string name="add_to_favorite_list">Add Movie to Favorite List:</string>
+    <string name="remove_from_favorite_list">Remove Movie from Favorite List:</string>
+
     <array name="pref_sort_values">
         <item>vote_average.desc</item>
         <item>popularity.desc</item>

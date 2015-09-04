@@ -2,6 +2,7 @@ package de.k11dev.sklaiber.popularmovies.ui.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.Result;
@@ -36,10 +39,7 @@ public class ImageArrayAdapter extends ArrayAdapter<Result> {
 
         if (convertView == null) {
             gridView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
-
-            holder = new ViewHolder();
-            holder.imageView = (ImageView) gridView.findViewById(R.id.grid_item_image);
-
+            holder = new ViewHolder(gridView);
             gridView.setTag(holder);
         } else {
             gridView = convertView;
@@ -59,6 +59,10 @@ public class ImageArrayAdapter extends ArrayAdapter<Result> {
     }
 
     class ViewHolder {
-        public ImageView imageView;
+        @Bind(R.id.grid_item_image) ImageView imageView;
+//        public ImageView imageView;
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
