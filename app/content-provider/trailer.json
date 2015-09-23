@@ -1,0 +1,36 @@
+{
+  "documentation": "Trailer Table",
+  "fields": [
+    {
+      "name": "movie_id",
+      "type": "Integer",
+      "nullable": false,
+      "foreignKey": {
+        "table": "movie",
+        "onDelete": "RESTRICT"
+      }
+    },
+    {
+      "name": "key",
+      "type": "String",
+      "nullable": false
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "nullable": false
+    },
+    {
+      "name": "site",
+      "type": "String"
+    },
+    {
+      "name": "size",
+      "type": "Integer"
+    },
+    {
+      "name": "type",
+      "type": "String"
+    }
+  ]
+}

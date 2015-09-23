@@ -51,6 +51,11 @@ public class ReviewResult implements Parcelable {
         dest.writeString(this.url);
     }
 
+//    public ReviewResult(String author, String content) {
+//        this.author = author;
+//        this.content = content;
+//    }
+
     public ReviewResult() {
     }
 

@@ -1,0 +1,48 @@
+{
+  "documentation": "Movie Table",
+  "fields": [
+    {
+      "name": "movie_id",
+      "type": "Integer",
+      "nullable": false
+    },
+    {
+      "name": "title",
+      "type": "String",
+      "nullable": false
+    },
+    {
+      "name": "original_title",
+      "type": "String"
+    },
+    {
+      "name": "overview",
+      "type": "String"
+    },
+    {
+      "name": "release_date",
+      "type": "String"
+    },
+    {
+      "name": "poster_path",
+      "type": "String",
+      "nullable": false
+    },
+    {
+      "name": "backdrop_path",
+      "type": "String"
+    },
+    {
+      "name": "vote_average",
+      "type": "Float",
+      "nullable": false
+    }
+  ],
+
+  "constraints": [
+    {
+      "name": "unique_name",
+      "definition": "UNIQUE (movie_id, title) ON CONFLICT REPLACE"
+    }
+  ]
+}

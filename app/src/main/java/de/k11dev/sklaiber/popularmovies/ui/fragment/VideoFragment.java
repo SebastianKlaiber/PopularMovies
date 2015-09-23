@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,7 +16,6 @@ import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.DividerItemDecoration;
 import de.k11dev.sklaiber.popularmovies.R;
-import de.k11dev.sklaiber.popularmovies.Utility;
 import de.k11dev.sklaiber.popularmovies.app.App;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.VideoResult;
@@ -38,7 +34,7 @@ public class VideoFragment extends Fragment {
 
     private final static String TRAILER_KEY = "trailer_key";
 
-    private ArrayList<VideoResult> mVideoResults;
+    private ArrayList<VideoResult> mVideoResults = new ArrayList<>();
 
     private MovieParcelable mMovieParcelable;
 
@@ -86,15 +82,14 @@ public class VideoFragment extends Fragment {
         return rootView;
     }
 
-
     public void updateTrailers() {
-        int id = Integer.valueOf(mMovieParcelable.getIdParc());
+        int id = mMovieParcelable.getId();
 
         App.getRestClient().getMovieService().getVideos(id, Config.API_KEY, new Callback<VideosResponse>() {
             @Override
             public void success(VideosResponse videosResponse, Response response) {
                 if (!videosResponse.getVideoResults().isEmpty()) {
-                    mVideoResults = videosResponse.getVideoResults();
+                    mVideoResults.addAll(videosResponse.getVideoResults());
                     mRecyclerView.setAdapter(new VideosViewAdapter(getActivity(), videosResponse.getVideoResults()));
                 }
             }
@@ -110,4 +105,5 @@ public class VideoFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(TRAILER_KEY, mVideoResults);
     }
+
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +14,13 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.Config;
-import de.k11dev.sklaiber.popularmovies.DividerItemDecoration;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.app.App;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.ReviewResult;
-import de.k11dev.sklaiber.popularmovies.model.VideoResult;
 import de.k11dev.sklaiber.popularmovies.rest.model.ReviewsResponse;
-import de.k11dev.sklaiber.popularmovies.rest.model.VideosResponse;
 import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 import de.k11dev.sklaiber.popularmovies.ui.adapter.ReviewsViewAdapter;
-import de.k11dev.sklaiber.popularmovies.ui.adapter.VideosViewAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -40,7 +35,7 @@ public class ReviewFragment extends Fragment {
 
     private MovieParcelable mMovieParcelable;
 
-    private ArrayList<ReviewResult> mReviewResults;
+    private static ArrayList<ReviewResult> mReviewResults = new ArrayList<>();
 
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
 
@@ -85,13 +80,13 @@ public class ReviewFragment extends Fragment {
     }
 
     public void updateReviews() {
-        int id = Integer.valueOf(mMovieParcelable.getIdParc());
+        int id = mMovieParcelable.getId();
 
         App.getRestClient().getMovieService().getReviews(id, Config.API_KEY, new Callback<ReviewsResponse>() {
             @Override
             public void success(ReviewsResponse reviewsResponse, Response response) {
                 if (!reviewsResponse.getReviewResults().isEmpty()) {
-                    mReviewResults = reviewsResponse.getReviewResults();
+                    mReviewResults.addAll(reviewsResponse.getReviewResults());
                     mRecyclerView.setAdapter(new ReviewsViewAdapter(reviewsResponse.getReviewResults()));
                 }
             }

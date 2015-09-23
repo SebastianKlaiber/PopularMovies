@@ -1,0 +1,13 @@
+{
+  "syntaxVersion": "3",
+  "projectPackageId": "de.k11dev.sklaiber.popularmovies",
+  "authority": "de.k11dev.sklaiber.popularmovies.provider",
+  "providerJavaPackage": "de.k11dev.sklaiber.popularmovies.provider",
+  "providerClassName": "MovieProvider",
+  "sqliteOpenHelperClassName": "MovieSQLiteOpenHelper",
+  "sqliteOpenHelperCallbacksClassName": "MovieSQLiteOpenHelperCallbacks",
+  "databaseFileName": "movie.db",
+  "databaseVersion": 1,
+  "enableForeignKeys": true,
+  "useAnnotations": true
+}

@@ -34,8 +34,8 @@ public class Result implements Parcelable {
     @SerializedName("vote_average")
     private float voteAverage;
 
-    public String getId() {
-        return String.valueOf(id);
+    public int getId() {
+        return id;
     }
 
     public String getBackdropPath() {
@@ -62,8 +62,8 @@ public class Result implements Parcelable {
         return title;
     }
 
-    public String getVoteAverage() {
-        return String.valueOf(voteAverage);
+    public float getVoteAverage() {
+        return voteAverage;
     }
 
 

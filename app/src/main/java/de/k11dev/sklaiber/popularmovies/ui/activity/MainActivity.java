@@ -19,8 +19,6 @@ import de.k11dev.sklaiber.popularmovies.ui.fragment.GridFragment;
 
 public class MainActivity extends AppCompatActivity implements GridFragment.Callback {
 
-    public final String LOG_TAG = MainActivity.class.getSimpleName();
-
     public final static String KEY_MOVIE_PARCELABLE = "movie";
 
     private static ArrayList<Result> mMovies = new ArrayList<>();

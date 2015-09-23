@@ -8,42 +8,39 @@ import android.os.Parcelable;
  */
 public class MovieParcelable implements Parcelable {
 
-    private String id;
+    private int id;
     private String title;
-    private String releaseYear;
-    private String rating;
+    private String releaseDate;
+    private float voteAverage;
     private String overview;
     private String posterPath;
     private String backdropPath;
 
-    public MovieParcelable(String id,
+    public MovieParcelable(int id,
                            String title,
-                           String releaseYear,
-                           String rating,
+                           String releaseDate,
+                           float voteAverage,
                            String overview,
                            String posterPath,
                            String backdropPath)
     {
         this.id = id;
         this.title = title;
-        this.releaseYear = releaseYear;
-        this.rating = rating;
+        this.releaseDate = releaseDate;
+        this.voteAverage = voteAverage;
         this.overview = overview;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
     }
 
     public MovieParcelable(Parcel in){
-        String[] movieData = new String[7];
-
-        in.readStringArray(movieData);
-        this.id = movieData[0];
-        this.title = movieData[1];
-        this.releaseYear = movieData[2];
-        this.rating = movieData[3];
-        this.overview = movieData[4];
-        this.posterPath = movieData[5];
-        this.backdropPath = movieData[6];
+        this.id = in.readInt();
+        this.backdropPath = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.posterPath = in.readString();
+        this.title = in.readString();
+        this.voteAverage = in.readFloat();
     }
 
     @Override
@@ -53,16 +50,15 @@ public class MovieParcelable implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {
-                this.id,
-                this.title,
-                this.releaseYear,
-                this.rating,
-                this.overview,
-                this.posterPath,
-                this.backdropPath
-        });
+        dest.writeInt(this.id);
+        dest.writeString(this.backdropPath);
+        dest.writeString(this.overview);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.posterPath);
+        dest.writeString(this.title);
+        dest.writeFloat(this.voteAverage);
     }
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public MovieParcelable createFromParcel(Parcel in) {
             return new MovieParcelable(in);
@@ -73,20 +69,20 @@ public class MovieParcelable implements Parcelable {
         }
     };
 
-    public String getIdParc() {
+    public int getId() {
         return id;
     }
 
-    public String getTitleParc() {
+    public String getTitle() {
         return title;
     }
 
     public String getReleaseYear() {
-        return releaseYear;
+        return releaseDate;
     }
 
-    public String getRating() {
-        return rating;
+    public float getRating() {
+        return voteAverage;
     }
 
     public String getOverview() {
