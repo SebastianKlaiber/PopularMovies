@@ -6,14 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import timber.log.Timber;
 
 /**
  * Created by sklaiber on 26.08.15.
@@ -58,7 +54,7 @@ public class Utility {
 
         set.remove(movieId);
         editor.putStringSet("key", set);
-        editor.commit();
+        editor.apply();
     }
 
     static public boolean isNetworkAvailable(Context c) {

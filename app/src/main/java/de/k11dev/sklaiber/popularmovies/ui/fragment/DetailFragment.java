@@ -28,12 +28,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
-import de.k11dev.sklaiber.popularmovies.Utility;
 import de.k11dev.sklaiber.popularmovies.app.App;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.ReviewResult;
 import de.k11dev.sklaiber.popularmovies.model.VideoResult;
 import de.k11dev.sklaiber.popularmovies.provider.movie.MovieContentValues;
+import de.k11dev.sklaiber.popularmovies.provider.movie.MovieCursor;
 import de.k11dev.sklaiber.popularmovies.provider.movie.MovieSelection;
 import de.k11dev.sklaiber.popularmovies.provider.review.ReviewColumns;
 import de.k11dev.sklaiber.popularmovies.provider.review.ReviewSelection;
@@ -84,18 +84,26 @@ public class DetailFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        ArrayList<String> strings = Utility.getMovies(getActivity());
-        for (int i = 0; i < strings.size(); i++) {
-            if (String.valueOf(mMovieParcelable.getId()).equals(strings.get(i))) {
+        MovieSelection movieSelection = new MovieSelection();
+        MovieCursor c = movieSelection.query(getActivity().getContentResolver());
+
+        while (c.moveToNext()) {
+            if (mMovieParcelable.getId() == c.getMovieId()) {
                 mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+                break;
+            } else {
+                mFAB.setColorFilter(null);
+                break;
             }
         }
+
+        c.close();
 
         mTitleTv.setText(mMovieParcelable.getTitle());
         mDescriptionTv.setText(mMovieParcelable.getOverview());
         mReleaseDateTv.setText(mMovieParcelable.getReleaseYear());
 
-        mRatingBar.setRating(Float.valueOf(mMovieParcelable.getRating()));
+        mRatingBar.setRating(mMovieParcelable.getRating());
 
         final LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
@@ -119,21 +127,29 @@ public class DetailFragment extends Fragment {
 
     @OnClick(R.id.fab_normal)
     public void onClick(View v){
-        ArrayList<String> strings = Utility.getMovies(getActivity());
 
-        if (strings.size() != 0) {
-            for (int i = 0; i < strings.size(); i++) {
-                if (String.valueOf(mMovieParcelable.getId()).equals(strings.get(i))) {
+        MovieSelection movieSelection = new MovieSelection();
+        MovieCursor c = movieSelection.query(getActivity().getContentResolver());
+
+        if (c.getCount()!= 0) {
+            while (c.moveToNext()) {
+                Timber.d(c.getTitle());
+                if (mMovieParcelable.getId() == c.getMovieId()) {
                     removeMovieFromFavorite();
+                    break;
+                } else {
+                    addMovieToFavorite();
+                    break;
                 }
             }
         } else {
             addMovieToFavorite();
         }
+
+        c.close();
     }
 
     public void addMovieToFavorite() {
-        Utility.addMovieId(getActivity(), String.valueOf(mMovieParcelable.getId()));
         Toast.makeText(getActivity(), getString(R.string.add_to_favorite_list) + mMovieParcelable.getTitle(), Toast.LENGTH_LONG).show();
         insertMovie(mMovieParcelable);
         mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
@@ -142,7 +158,6 @@ public class DetailFragment extends Fragment {
     }
 
     public void removeMovieFromFavorite() {
-        Utility.removeMovie(getActivity(), String.valueOf(mMovieParcelable.getId()));
         mFAB.setColorFilter(null);
 
         MovieSelection movieSelection = new MovieSelection();

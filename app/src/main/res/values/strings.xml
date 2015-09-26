@@ -4,6 +4,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="action_share">Share</string>
+
+    <string name="trailer_empty">Trailer are Empty. There is no trailer to share!</string>
+
     <string name="image_content_desc">Movie Image</string>
     <string name="title_activity_movie_detail">MovieDetail</string>
 

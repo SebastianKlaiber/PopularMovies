@@ -66,6 +66,37 @@ public class Result implements Parcelable {
         return voteAverage;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setVoteAverage(float voteAverage) {
+        this.voteAverage = voteAverage;
+    }
 
     @Override
     public int describeContents() {

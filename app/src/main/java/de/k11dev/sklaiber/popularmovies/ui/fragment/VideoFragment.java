@@ -1,13 +1,19 @@
 package de.k11dev.sklaiber.popularmovies.ui.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -51,10 +57,9 @@ public class VideoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         mMovieParcelable = getArguments().getParcelable(MainActivity.KEY_MOVIE_PARCELABLE);
     }
-
 
     @Nullable
     @Override
@@ -80,6 +85,39 @@ public class VideoFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_movie_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                createShareIntent();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void createShareIntent() {
+
+        if (mVideoResults.size() != 0) {
+            Uri uri = Uri.parse(Config.YOUTUBE_URL + mVideoResults.get(0).getKey());
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, uri.toString());
+            sendIntent.setType("text/plain");
+
+            startActivity(sendIntent);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.trailer_empty), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void updateTrailers() {

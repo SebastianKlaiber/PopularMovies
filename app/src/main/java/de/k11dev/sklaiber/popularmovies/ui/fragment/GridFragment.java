@@ -1,14 +1,10 @@
 package de.k11dev.sklaiber.popularmovies.ui.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +14,6 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -27,8 +22,9 @@ import de.k11dev.sklaiber.popularmovies.Config;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.Utility;
 import de.k11dev.sklaiber.popularmovies.app.App;
-import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.Result;
+import de.k11dev.sklaiber.popularmovies.provider.movie.MovieCursor;
+import de.k11dev.sklaiber.popularmovies.provider.movie.MovieSelection;
 import de.k11dev.sklaiber.popularmovies.rest.model.ApiResponse;
 import de.k11dev.sklaiber.popularmovies.ui.activity.MainActivity;
 import de.k11dev.sklaiber.popularmovies.ui.adapter.ImageArrayAdapter;
@@ -125,6 +121,10 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
 
         if (!Utility.isNetworkAvailable(getActivity())) {
             Timber.d("Network is not available");
+            sortingOrder = Utility.getPreferredSortingOrder(getActivity());
+            if (sortingOrder.equals("favorite")) {
+                loadFavoriteList();
+            }
 
             CharSequence text = getString(R.string.network_not_available_message);
             Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_LONG);
@@ -135,10 +135,41 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
                 Timber.d("updating movies via API call");
                 sortingOrder = newSortingOrder;
 
-                updateMovies();
+                if (sortingOrder.equals("favorite")){
+                    loadFavoriteList();
+                } else {
+                    updateMovies();
+                }
             }
 
         }
+    }
+
+    public void loadFavoriteList() {
+        mProgressBar.setVisibility(View.GONE);
+        mResultList.clear();
+        mMovieAdapter.clear();
+
+        MovieSelection movieSelection = new MovieSelection();
+        MovieCursor c = movieSelection.query(getActivity().getContentResolver());
+
+        while (c.moveToNext()) {
+            Result result = new Result();
+            result.setId(c.getMovieId());
+            result.setTitle(c.getTitle());
+            result.setReleaseDate(c.getReleaseDate());
+            result.setVoteAverage(c.getVoteAverage());
+            result.setOverview(c.getOverview());
+            result.setPosterPath(c.getPosterPath());
+            result.setBackdropPath(c.getBackdropPath());
+
+            mMovieAdapter.add(result);
+            mResultList.add(result);
+        }
+
+        ((MainActivity) getActivity()).setList(mResultList);
+
+        c.close();
     }
 
     @Override
