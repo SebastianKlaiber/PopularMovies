@@ -14,8 +14,6 @@ import de.k11dev.sklaiber.popularmovies.ui.adapter.PageAdapter;
 
 public class DetailActivity extends AppCompatActivity{
 
-    private MovieParcelable mMovieParcelable;
-
     @Bind(R.id.pager) ViewPager mViewPager;
     @Bind(R.id.tab_layout) TabLayout mTabLayout;
     @Bind(R.id.toolbar) Toolbar mToolbar;
@@ -28,12 +26,21 @@ public class DetailActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mMovieParcelable = getIntent().getParcelableExtra(MainActivity.KEY_MOVIE_PARCELABLE);
+        MovieParcelable movieParcelable = getIntent().getParcelableExtra(MainActivity.KEY_MOVIE_PARCELABLE);
 
-        mViewPager.setAdapter(new PageAdapter(this, getFragmentManager(), mMovieParcelable));
+        getSupportActionBar().setTitle(movieParcelable.getTitle());
+
+        mViewPager.setAdapter(new PageAdapter(this, getFragmentManager(), movieParcelable));
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

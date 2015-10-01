@@ -6,7 +6,7 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/blue_gray_500</item>
         <item name="colorPrimaryDark">@color/blue_gray_700</item>
-        <item name="colorAccent">@color/teal_500</item>
+        <item name="colorAccent">@color/accent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBarOverlay">true</item>

@@ -2,6 +2,9 @@ package de.k11dev.sklaiber.popularmovies.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,7 +17,7 @@ import butterknife.ButterKnife;
 import de.k11dev.sklaiber.popularmovies.R;
 import de.k11dev.sklaiber.popularmovies.model.MovieParcelable;
 import de.k11dev.sklaiber.popularmovies.model.Result;
-import de.k11dev.sklaiber.popularmovies.ui.fragment.DetailFragment;
+import de.k11dev.sklaiber.popularmovies.ui.adapter.PageAdapter;
 import de.k11dev.sklaiber.popularmovies.ui.fragment.GridFragment;
 
 public class MainActivity extends AppCompatActivity implements GridFragment.Callback {
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
 
     private boolean mTwoPane;
 
+    @Nullable @Bind(R.id.pager) ViewPager mViewPager;
+    @Nullable @Bind(R.id.tab_layout) TabLayout mTabLayout;
     @Bind(R.id.toolbar) Toolbar mToolbar;
 
     @Override
@@ -36,13 +41,19 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
 
         setSupportActionBar(mToolbar);
 
-        mTwoPane = findViewById(R.id.detail_container) != null;
+        mTwoPane = findViewById(R.id.pager) != null;
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.grid_fragment, new GridFragment())
                     .commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     public void setList(ArrayList<Result> movies){
@@ -62,9 +73,10 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
                 mMovies.get(position).getBackdropPath());
 
         if (mTwoPane) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.detail_container, DetailFragment.newInstance(movieParcelable))
-                    .commit();
+            if (mViewPager != null && mTabLayout != null) {
+                mViewPager.setAdapter(new PageAdapter(this, getFragmentManager(), movieParcelable));
+                mTabLayout.setupWithViewPager(mViewPager);
+            }
         } else {
             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
             intent.putExtra(KEY_MOVIE_PARCELABLE, movieParcelable);

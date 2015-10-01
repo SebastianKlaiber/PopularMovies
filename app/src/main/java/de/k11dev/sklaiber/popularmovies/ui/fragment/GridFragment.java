@@ -86,6 +86,12 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     public void updateMovies() {
         mProgressBar.setVisibility(View.VISIBLE);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());

@@ -90,10 +90,6 @@ public class DetailFragment extends Fragment {
         while (c.moveToNext()) {
             if (mMovieParcelable.getId() == c.getMovieId()) {
                 mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
-                break;
-            } else {
-                mFAB.setColorFilter(null);
-                break;
             }
         }
 
@@ -139,7 +135,6 @@ public class DetailFragment extends Fragment {
                     break;
                 } else {
                     addMovieToFavorite();
-                    break;
                 }
             }
         } else {
@@ -150,7 +145,13 @@ public class DetailFragment extends Fragment {
     }
 
     public void addMovieToFavorite() {
-        Toast.makeText(getActivity(), getString(R.string.add_to_favorite_list) + mMovieParcelable.getTitle(), Toast.LENGTH_LONG).show();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getString(R.string.add_to_favorite_list))
+            .append("\n")
+            .append(mMovieParcelable.getTitle());
+
+        Toast.makeText(getActivity(), sb, Toast.LENGTH_LONG).show();
         insertMovie(mMovieParcelable);
         mFAB.setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
         updateReviews();
@@ -172,7 +173,13 @@ public class DetailFragment extends Fragment {
         trailerSelection.movieId(mMovieParcelable.getId());
         trailerSelection.delete(getActivity().getContentResolver());
 
-        Toast.makeText(getActivity(), getString(R.string.remove_from_favorite_list) + mMovieParcelable.getTitle(), Toast.LENGTH_LONG).show();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getString(R.string.remove_from_favorite_list))
+                .append("\n")
+                .append(mMovieParcelable.getTitle());
+
+        Toast.makeText(getActivity(), sb, Toast.LENGTH_LONG).show();
     }
 
     public void updateTrailers() {
@@ -181,6 +188,7 @@ public class DetailFragment extends Fragment {
             public void success(VideosResponse videosResponse, Response response) {
                 if(!videosResponse.getVideoResults().isEmpty()) {
                     insertTrailers(videosResponse.getVideoResults());
+
                 }
             }
 
