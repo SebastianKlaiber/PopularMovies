@@ -73,6 +73,10 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
             sortingOrder = savedInstanceState.getString(KEY_SORT);
             mResultList = savedInstanceState.getParcelableArrayList(MOVIES_KEY);
 
+            int index = mGridView.getFirstVisiblePosition();
+            mGridView.smoothScrollToPosition(index);
+            mGridView.setSelection(index);
+
             if (mResultList != null) {
                 mMovieAdapter.addAll(mResultList);
             }
@@ -169,10 +173,9 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
             result.setPosterPath(c.getPosterPath());
             result.setBackdropPath(c.getBackdropPath());
 
-            mMovieAdapter.add(result);
             mResultList.add(result);
         }
-
+        mMovieAdapter.addAll(mResultList);
         ((MainActivity) getActivity()).setList(mResultList);
 
         c.close();
@@ -187,5 +190,12 @@ public class GridFragment extends Fragment implements GridView.OnItemClickListen
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ((Callback) getActivity()).onItemSelected(position);
+    }
+
+    public void doSomething(ArrayList<Result> movies) {
+        sortingOrder = Utility.getPreferredSortingOrder(getActivity());
+        if (sortingOrder.equals("favorite")){
+            loadFavoriteList();
+        }
     }
 }

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements GridFragment.Call
                     .replace(R.id.grid_fragment, new GridFragment())
                     .commit();
         }
+
     }
 
     @Override

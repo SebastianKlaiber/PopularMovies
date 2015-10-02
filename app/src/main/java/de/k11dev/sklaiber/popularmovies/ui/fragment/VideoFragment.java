@@ -117,6 +117,7 @@ public class VideoFragment extends Fragment {
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             sendIntent.putExtra(Intent.EXTRA_TEXT, uri.toString());
             sendIntent.setType("text/plain");
 

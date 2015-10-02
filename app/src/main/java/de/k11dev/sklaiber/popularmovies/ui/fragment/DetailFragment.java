@@ -95,6 +95,7 @@ public class DetailFragment extends Fragment {
 
         c.close();
 
+
         mTitleTv.setText(mMovieParcelable.getTitle());
         mDescriptionTv.setText(mMovieParcelable.getOverview());
         mReleaseDateTv.setText(mMovieParcelable.getReleaseYear());
@@ -129,7 +130,6 @@ public class DetailFragment extends Fragment {
 
         if (c.getCount()!= 0) {
             while (c.moveToNext()) {
-                Timber.d(c.getTitle());
                 if (mMovieParcelable.getId() == c.getMovieId()) {
                     removeMovieFromFavorite();
                     break;
@@ -271,4 +271,5 @@ public class DetailFragment extends Fragment {
         Uri uri = values.insert(getActivity().getContentResolver());
         return ContentUris.parseId(uri);
     }
+
 }
